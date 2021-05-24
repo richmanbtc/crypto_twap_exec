@@ -30,7 +30,7 @@ node main.js --duration 86400 --total_size -4
 
 ```bash
 docker build -t crypto_twap_exec .
-docker run --rm -it --env-file .env node main.js --duration 86400 --total_size -4
+docker run -d --env-file .env crypto_twap_exec node main.js --duration 86400 --total_size -4
 ```
 
 ## 注意
