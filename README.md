@@ -24,6 +24,15 @@ BITFLYER_API_SECRET: bitflyerのapi secret
 node main.js --duration 86400 --total_size -4
 ```
 
+## Dockerの場合
+
+.envに環境変数を記載
+
+```bash
+docker build -t crypto_twap_exec .
+docker run --rm -it --env-file .env node main.js --duration 86400 --total_size -4
+```
+
 ## 注意
 
 最低限で作ったのでエラー処理とかメンテとか考慮してない。
