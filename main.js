@@ -4,6 +4,8 @@ const log4js = require('log4js')
 
 program.version('1.0.0')
 program
+    .option('--exchange <type>', 'exchange (bitflyer/ftx)')
+    .option('--subaccount <type>', 'subaccount')
     .option('--duration <number>', 'execution duration', 0)
     .option('--total_size <number>', 'total execution size', 0)
     .option('--log_level <type>', 'log level', 'debug')
@@ -41,10 +43,26 @@ if (totalSize === 0) {
     process.exit(1)
 }
 
-const bitflyer = new ccxt.bitflyer({
-    apiKey: process.env.BITFLYER_API_KEY,
-    secret: process.env.BITFLYER_API_SECRET
-});
+const createClient = () => {
+    if (options.exchange === 'bitflyer') {
+        return new ccxt.bitflyer({
+            apiKey: process.env.BITFLYER_API_KEY,
+            secret: process.env.BITFLYER_API_SECRET
+        })
+    } else if (options.exchange === 'ftx') {
+        return new ccxt.ftx({
+            apiKey: process.env.FTX_API_KEY,
+            secret: process.env.FTX_API_SECRET,
+            headers: {
+                'SUBACCOUNT': options.subaccount,
+            }
+        })
+    } else {
+        throw new Exception('unknown exchange')
+    }
+}
+
+const client = createClient();
 
 (async () => {
     logger.info('test api key')
